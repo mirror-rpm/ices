@@ -1,0 +1,64 @@
+#!/bin/sh
+#
+# ices		This shellscript takes care of starting and stopping
+#		the ices client
+#
+# chkconfig: 345 40 60
+# description: IceS is a source client for broadcasting in Ogg Vorbis format \
+#              to an icecast2 server
+# processname: ices
+#
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+[ -f /etc/sysconfig/network ] && . /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+LOCKFILE=/var/lock/subsys/ices
+RETVAL=0
+
+start() {
+	export TMPDIR="/var/tmp"
+
+	echo -n "Starting ices: "
+	daemon --user ices /usr/bin/ices /etc/ices.conf
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch $LOCKFILE
+}	
+stop() {
+	echo -n "Shutting down ices: "
+	killproc ices
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f $LOCKFILE
+}	
+
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart|reload)
+	stop
+	start
+	;;
+  status)
+	status $PROCESS
+	RETVAL=$?
+	;;
+  condrestart)
+  	[ -f $LOCKFILE ] && restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|status|condrestart}"
+	RETVAL=1
+esac
+
+exit $?
