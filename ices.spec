@@ -1,6 +1,6 @@
 Name: ices
 Version: 2.0.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: Source streaming for Icecast
 Group: System Environment/Daemons
 License: GPL
@@ -12,7 +12,6 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: libxml2-devel, libshout-devel >= 2.0, libvorbis-devel,
 BuildRequires: alsa-lib-devel, pkgconfig, zlib-devel, libogg-devel
 BuildRequires: libtheora-devel, speex-devel
-Requires: streaming-server
 Requires(post): /sbin/chkconfig
 Requires(post): /sbin/service
 Requires(preun): /sbin/chkconfig
@@ -80,6 +79,9 @@ fi
 %attr(0770,root,ices) %{_var}/log/ices
 
 %changelog
+* Fri Sep 08 2006 Andreas Thienemann <andreas@bawue.net> - 2.0.1-3
+- FE6 Rebuild
+
 * Tue Mar 28 2006 Andreas Thienemann <andreas@bawue.net> 2.0.1-2
 - Cleaned up the specfile for FE
 
