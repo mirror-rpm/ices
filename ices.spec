@@ -1,11 +1,11 @@
 Name: ices
 Version: 2.0.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 Summary: Source streaming for Icecast
 Group: System Environment/Daemons
 License: GPL
 URL: http://www.icecast.org
-Source0: http://downloads.us.xiph.org/releases/ices/ices-2.0.1.tar.bz2
+Source0: http://downloads.us.xiph.org/releases/ices/ices-%{version}.tar.bz2
 Source1: ices.init
 Source2: ices.logrotate
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -79,6 +79,9 @@ fi
 %attr(0770,root,ices) %{_var}/log/ices
 
 %changelog
+* Wed Mar 07 2007 Andreas Thienemann <andreas@bawue.net> - 2.0.1-4
+- Fixed logrotation script to point to the correct file
+
 * Fri Sep 08 2006 Andreas Thienemann <andreas@bawue.net> - 2.0.1-3
 - FE6 Rebuild
 
