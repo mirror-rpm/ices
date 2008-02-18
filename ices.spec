@@ -51,7 +51,7 @@ rm -rf %{buildroot}
 
 %pre
 /usr/sbin/useradd -c "IceS Shoutcast source" \
-        -s /sbin/nologin -r -d /dev/null ices 2> /dev/null || :
+        -s /sbin/nologin -r -d /tmp ices 2> /dev/null || :
 
 %post
 if [ $1 = 1 ]; then
@@ -79,6 +79,9 @@ fi
 %attr(0770,root,ices) %{_var}/log/ices
 
 %changelog
+* Mon Feb 18 2008 Andreas Thienemann <athienem@redhat.com> - 2.0.1-5
+- Rebuilt against gcc43
+
 * Wed Mar 07 2007 Andreas Thienemann <andreas@bawue.net> - 2.0.1-4
 - Fixed logrotation script to point to the correct file
 
