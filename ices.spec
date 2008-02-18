@@ -1,6 +1,6 @@
 Name: ices
 Version: 2.0.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Source streaming for Icecast
 Group: System Environment/Daemons
 License: GPL
