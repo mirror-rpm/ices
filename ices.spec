@@ -1,6 +1,6 @@
 Name: ices
 Version: 2.0.1
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: Source streaming for Icecast
 Group: System Environment/Daemons
 License: GPL
@@ -79,6 +79,9 @@ fi
 %attr(0770,root,ices) %{_var}/log/ices
 
 %changelog
+* Tue Feb 19 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 2.0.1-6
+- Autorebuild for GCC 4.3
+
 * Mon Feb 18 2008 Andreas Thienemann <athienem@redhat.com> - 2.0.1-5
 - Rebuilt against gcc43
 
