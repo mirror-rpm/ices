@@ -1,0 +1,20 @@
+diff -Naur ices-2.0.1/src/im_playlist.c ices-2.0.1-new/src/im_playlist.c
+--- ices-2.0.1/src/im_playlist.c	2004-07-19 18:53:15.000000000 -0300
++++ ices-2.0.1-new/src/im_playlist.c	2010-04-23 23:11:39.000000000 -0300
+@@ -166,6 +166,8 @@
+         {
+             if (ogg_page_bos (&og))
+             {
++// this is non sense - roma 20100423
++#if 0
+                if (ogg_page_serialno (&og) == pl->current_serial)
+                {
+                    LOG_WARN1 ("Skipping \"%s\" as the serial number is the same as previous", pl->filename);
+@@ -173,6 +175,7 @@
+                    pl->errors++;
+                    return 0;
+                }
++#endif
+                pl->current_serial = ogg_page_serialno (&og);
+             }
+             if (input_calculate_ogg_sleep (&og) < 0)
