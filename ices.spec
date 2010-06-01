@@ -1,6 +1,6 @@
 Name: ices
 Version: 2.0.1
-Release: 9%{?dist}
+Release: 10%{?dist}
 Summary: Source streaming for Icecast
 Group: System Environment/Daemons
 License: GPLv2
@@ -8,6 +8,7 @@ URL: http://www.icecast.org
 Source0: http://downloads.us.xiph.org/releases/ices/ices-%{version}.tar.bz2
 Source1: ices.init
 Source2: ices.logrotate
+Patch0:  ices-2.0.1-noserial.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: libxml2-devel, libshout-devel >= 2.0, libvorbis-devel,
 BuildRequires: alsa-lib-devel, pkgconfig, zlib-devel, libogg-devel
@@ -28,6 +29,7 @@ could be used if certain conditions are met.
 
 %prep
 %setup -q
+%patch0 -p1 -b .noserial
 perl -pi -e 's|<background>0</background>|<background>1</background>|' conf/*.xml
 
 %build
@@ -51,7 +53,7 @@ rm -rf %{buildroot}
 
 %pre
 /usr/sbin/useradd -c "IceS Shoutcast source" \
-        -s /sbin/nologin -r -d /tmp ices 2> /dev/null || :
+        -s /sbin/nologin -r -d / ices 2> /dev/null || :
 
 %post
 if [ $1 = 1 ]; then
@@ -66,7 +68,7 @@ fi
 
 %postun
 if [ "$1" -ge "1" ]; then
-        /sbin/service ices condrestart >/dev/null 2>&1
+        /sbin/service ices condrestart &>/dev/null 2>&1 || :
 fi
 
 %files
@@ -76,9 +78,17 @@ fi
 %config(noreplace) %{_sysconfdir}/ices.conf
 %config %{_sysconfdir}/logrotate.d/ices
 %{_initrddir}/ices
-%attr(0770,root,ices) %{_var}/log/ices
+%attr(0755,root,ices) %{_var}/log/ices
 
 %changelog
+* Fri Apr 23 2010 Paulo Roma <roma@lcg.ufrj.br> - 2.0.1-10
+- Removed the non sense serial test.
+- Removed service-default-enabled warning.
+- Removed non-standard-dir-perm /var/log/ices 0770 warning.
+- Removed use-tmp-in-%%pre (changed /tpm for /).
+- Fixed %%postun scriptlet failed.
+- Fixed status in ices.init.
+
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.1-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
