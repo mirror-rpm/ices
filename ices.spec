@@ -1,22 +1,21 @@
 Name: ices
 Version: 2.0.1
-Release: 12%{?dist}
+Release: 13%{?dist}
 Summary: Source streaming for Icecast
 Group: System Environment/Daemons
 License: GPLv2
 URL: http://www.icecast.org
 Source0: http://downloads.us.xiph.org/releases/ices/ices-%{version}.tar.bz2
-Source1: ices.init
+Source1: ices.service
 Source2: ices.logrotate
 Patch0:  ices-2.0.1-noserial.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: libxml2-devel, libshout-devel >= 2.0, libvorbis-devel,
 BuildRequires: alsa-lib-devel, pkgconfig, zlib-devel, libogg-devel
 BuildRequires: libtheora-devel, speex-devel
-Requires(post): /sbin/chkconfig
-Requires(post): /sbin/service
-Requires(preun): /sbin/chkconfig
-Requires(preun): /sbin/service
+Requires(post): systemd-units
+Requires(preun): systemd-units
+Requires(postun): systemd-units
 
 %description
 IceS is a source client for a streaming server. The purpose of this client is
@@ -44,7 +43,7 @@ rm -rf %{buildroot}
 
 install -D -m 755 src/ices %{buildroot}%{_bindir}/ices
 install -D -m 644 conf/ices-playlist.xml %{buildroot}%{_sysconfdir}/ices.conf
-install -D -m 755 %{SOURCE1} %{buildroot}%{_initrddir}/ices
+install -D -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/ices.service
 install -D -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/ices
 install -d -m 755 %{buildroot}%{_var}/log/ices
 
@@ -56,20 +55,35 @@ rm -rf %{buildroot}
         -s /sbin/nologin -r -d / ices 2> /dev/null || :
 
 %post
-if [ $1 = 1 ]; then
-   /sbin/chkconfig --add ices
+if [ $1 -eq 1 ] ; then 
+    # Initial installation 
+    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 fi
 
 %preun
-if [ $1 = 0 ]; then
-        /sbin/service ices stop >/dev/null 2>&1
-        /sbin/chkconfig --del ices
+if [ $1 -eq 0 ] ; then
+    # Package removal, not upgrade
+    /bin/systemctl --no-reload disable ices.service > /dev/null 2>&1 || :
+    /bin/systemctl stop ices.service > /dev/null 2>&1 || :
 fi
 
 %postun
-if [ "$1" -ge "1" ]; then
-        /sbin/service ices condrestart &>/dev/null 2>&1 || :
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+if [ $1 -ge 1 ] ; then
+    # Package upgrade, not uninstall
+    /bin/systemctl try-restart ices.service >/dev/null 2>&1 || :
 fi
+
+%triggerun -- ices < 2.0.1-13
+# Save the current service runlevel info
+# User must manually run systemd-sysv-convert --apply ices
+# to migrate them to systemd targets
+/usr/bin/systemd-sysv-convert --save ices >/dev/null 2>&1 ||:
+
+# Run these because the SysV package being removed won't do them
+/sbin/chkconfig --del ices >/dev/null 2>&1 || :
+/bin/systemctl try-restart ices.service >/dev/null 2>&1 || :
+
 
 %files
 %defattr(-,root,root)
@@ -77,10 +91,13 @@ fi
 %{_bindir}/ices
 %config(noreplace) %{_sysconfdir}/ices.conf
 %config %{_sysconfdir}/logrotate.d/ices
-%{_initrddir}/ices
+%{_unitdir}/ices.service
 %attr(0755,root,ices) %{_var}/log/ices
 
 %changelog
+* Wed Apr 18 2012 Jon Ciesla <limburgher@gmail.com> - 2.0.1-13
+- Migrate to systemd, BZ 789710.
+
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.1-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 

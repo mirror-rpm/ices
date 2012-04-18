@@ -1,0 +1,12 @@
+[Unit]
+Description=IceS Client
+After=network.target
+
+[Service]
+User=ices
+Type=forking
+Environment=TMPDIR=/var/tmp
+ExecStart=/usr/bin/ices /etc/ices.conf
+
+[Install]
+WantedBy=multi-user.target
