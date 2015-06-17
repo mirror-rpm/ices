@@ -1,6 +1,6 @@
 Name: ices
 Version: 2.0.1
-Release: 19%{?dist}
+Release: 20%{?dist}
 Summary: Source streaming for Icecast
 Group: System Environment/Daemons
 License: GPLv2
@@ -95,6 +95,9 @@ fi
 %attr(0755,root,ices) %{_var}/log/ices
 
 %changelog
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.1-20
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.1-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
