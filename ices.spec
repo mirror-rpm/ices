@@ -9,6 +9,7 @@ Source0: http://downloads.us.xiph.org/releases/ices/ices-%{version}.tar.bz2
 Source1: ices.service
 Source2: ices.logrotate
 Patch0:  ices-2.0.1-noserial.patch
+BuildRequires:  gcc
 BuildRequires: libxml2-devel, libshout-devel >= 2.0, libvorbis-devel,
 BuildRequires: alsa-lib-devel, pkgconfig, zlib-devel, libogg-devel
 BuildRequires: libtheora-devel, speex-devel, systemd-units
