@@ -86,7 +86,6 @@ fi
 
 
 %files
-%defattr(-,root,root)
 %doc AUTHORS COPYING README TODO doc/*.html doc/*.css conf/*.xml
 %{_bindir}/ices
 %config(noreplace) %{_sysconfdir}/ices.conf
