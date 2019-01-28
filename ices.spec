@@ -2,7 +2,6 @@ Name: ices
 Version: 2.0.1
 Release: 26%{?dist}
 Summary: Source streaming for Icecast
-Group: System Environment/Daemons
 License: GPLv2
 URL: http://www.icecast.org
 Source0: http://downloads.us.xiph.org/releases/ices/ices-%{version}.tar.bz2
