@@ -46,9 +46,6 @@ install -D -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/ices.service
 install -D -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/ices
 install -d -m 755 %{buildroot}%{_var}/log/ices
 
-%clean 
-rm -rf %{buildroot}
-
 %pre
 /usr/sbin/useradd -c "IceS Shoutcast source" \
         -s /sbin/nologin -r -d / ices 2> /dev/null || :
