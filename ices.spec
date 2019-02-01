@@ -1,6 +1,6 @@
 Name: ices
 Version: 2.0.1
-Release: 26%{?dist}
+Release: 27%{?dist}
 Summary: Source streaming for Icecast
 License: GPLv2
 URL: http://www.icecast.org
@@ -90,6 +90,9 @@ fi
 %attr(0755,root,ices) %{_var}/log/ices
 
 %changelog
+* Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-27
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-26
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
